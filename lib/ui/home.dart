@@ -11,18 +11,14 @@ class _HomeState extends State<Home> {
   getData(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     name = await prefs.getString("$key");
-    setState(() {
-
-    });
+    setState(() {});
   }
 
-@override
+  @override
   initState() {
     super.initState();
     getData("Name");
-
   }
-
 
   @override
   Widget build(BuildContext context) {

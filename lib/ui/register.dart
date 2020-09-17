@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:login_register/ui/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
@@ -12,6 +11,7 @@ class _RegisterState extends State<Register> {
   TextEditingController txtSurname = TextEditingController();
   TextEditingController txtUsername = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
+  bool validate = false;
 
   saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,7 +19,15 @@ class _RegisterState extends State<Register> {
     await prefs.setString("Surname", txtSurname.text);
     await prefs.setString("Username", txtUsername.text);
     await prefs.setString("Password", txtPassword.text);
-    Navigator.pop(context);
+    if (txtName.text.isNotEmpty &&
+        txtPassword.text.isNotEmpty &&
+        txtSurname.text.isNotEmpty &&
+        txtUsername.text.isNotEmpty) {
+      Navigator.pop(context);
+    } else {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => Register()));
+    }
   }
 
   @override
@@ -36,7 +44,10 @@ class _RegisterState extends State<Register> {
               padding: EdgeInsets.all(20),
               child: TextField(
                 controller: txtName,
-                decoration: InputDecoration(hintText: "Adınızı Giriniz"),
+                decoration: InputDecoration(
+                  hintText: "Adınızı Giriniz",
+                  errorText: validate ? 'Hiç bir alan boş bırakılamaz' : null,
+                ),
               ),
             ),
             Text(""),
@@ -44,7 +55,10 @@ class _RegisterState extends State<Register> {
               padding: EdgeInsets.all(20),
               child: TextField(
                 controller: txtSurname,
-                decoration: InputDecoration(hintText: "Soyadınızı Giriniz"),
+                decoration: InputDecoration(
+                  hintText: "Soyadınızı Giriniz",
+                  errorText: validate ? 'Hiç bir alan boş bırakılamaz' : null,
+                ),
               ),
             ),
             Text(""),
@@ -52,8 +66,10 @@ class _RegisterState extends State<Register> {
               padding: EdgeInsets.all(20),
               child: TextField(
                 controller: txtUsername,
-                decoration:
-                    InputDecoration(hintText: "Kullanıcı Adınızı Giriniz"),
+                decoration: InputDecoration(
+                  hintText: "Kullanıcı Adınızı Giriniz",
+                  errorText: validate ? 'Hiç bir alan boş bırakılamaz' : null,
+                ),
               ),
             ),
             Text(""),
@@ -61,7 +77,10 @@ class _RegisterState extends State<Register> {
               padding: EdgeInsets.all(20),
               child: TextField(
                 controller: txtPassword,
-                decoration: InputDecoration(hintText: "Parolanızı Giriniz"),
+                decoration: InputDecoration(
+                  hintText: "Parolanızı Giriniz",
+                  errorText: validate ? 'Hiç bir alan boş bırakılamaz' : null,
+                ),
               ),
             ),
             RaisedButton(
@@ -70,7 +89,21 @@ class _RegisterState extends State<Register> {
                   style: TextStyle(color: Colors.white),
                 ),
                 color: Colors.blue,
-                onPressed: () => saveData()),
+                onPressed: () {
+                  setState(() {
+                    txtUsername.text.isEmpty
+                        ? validate = true
+                        : validate = false;
+                    txtPassword.text.isEmpty
+                        ? validate = true
+                        : validate = false;
+                    txtName.text.isEmpty ? validate = true : validate = false;
+                    txtSurname.text.isEmpty
+                        ? validate = true
+                        : validate = false;
+                  });
+                  saveData();
+                }),
           ],
         ),
       ),
