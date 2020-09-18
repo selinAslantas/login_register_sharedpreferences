@@ -15,19 +15,28 @@ class _RegisterState extends State<Register> {
 
   saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+                        setState(() {
+                    txtUsername.text.isEmpty
+                        ? validate = true
+                        : validate = false;
+                    txtPassword.text.isEmpty
+                        ? validate = true
+                        : validate = false;
+                    txtName.text.isEmpty ? validate = true : validate = false;
+                    txtSurname.text.isEmpty
+                        ? validate = true
+                        : validate = false;
+                  });
+                  if(txtName.text.isNotEmpty &&
+        txtPassword.text.isNotEmpty &&
+        txtSurname.text.isNotEmpty &&
+        txtUsername.text.isNotEmpty){
     await prefs.setString("Name", txtName.text);
     await prefs.setString("Surname", txtSurname.text);
     await prefs.setString("Username", txtUsername.text);
     await prefs.setString("Password", txtPassword.text);
-    if (txtName.text.isNotEmpty &&
-        txtPassword.text.isNotEmpty &&
-        txtSurname.text.isNotEmpty &&
-        txtUsername.text.isNotEmpty) {
-      Navigator.pop(context);
-    } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Register()));
-    }
+        Navigator.pop(context);
+        }
   }
 
   @override
@@ -90,19 +99,9 @@ class _RegisterState extends State<Register> {
                 ),
                 color: Colors.blue,
                 onPressed: () {
-                  setState(() {
-                    txtUsername.text.isEmpty
-                        ? validate = true
-                        : validate = false;
-                    txtPassword.text.isEmpty
-                        ? validate = true
-                        : validate = false;
-                    txtName.text.isEmpty ? validate = true : validate = false;
-                    txtSurname.text.isEmpty
-                        ? validate = true
-                        : validate = false;
-                  });
+
                   saveData();
+
                 }),
           ],
         ),

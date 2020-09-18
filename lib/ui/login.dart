@@ -37,10 +37,11 @@ class _LoginPageState extends State<LoginPage> {
         txtPassword.text == prefs.getString("Password")) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => Home()));
-    } else {
+    }
+    /*else {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => LoginPage()));
-    }
+    }*/
   }
 
   @override
